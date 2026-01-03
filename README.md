@@ -183,7 +183,5 @@ docker-compose exec odoo17 odoo -u mail_courriel -d odoo_db --stop-after-init
 
 - [Rapport technique complet](rapport/Rapport.pdf)
 
-## 👥 Auteurs
 
-**EMSI - Projet de fin d'études 5IIR**
 
