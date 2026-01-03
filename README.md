@@ -60,8 +60,8 @@ mail_courriel/
 
 **1. Cloner le repository**
 ```bash
-git clone https://github.com/votre-username/odoo-mail-courriel.git
-cd odoo-mail-courriel
+git clone https://github.com/MohammedEttalbi/Module-Odoo.git
+cd Module-Odoo
 ```
 
 **2. Installer Ollama et le modèle LLaMA**
