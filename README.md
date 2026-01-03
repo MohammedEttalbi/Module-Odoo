@@ -1,6 +1,6 @@
 # 📧 Gestion Intelligente des Courriels - Odoo 17
 
-> Module Odoo 17 de gestion des emails avec interface style Outlook et assistance IA (LLaMA via Ollama)
+> Module Odoo 17 de gestion des emails avec interface moderne et assistance IA (LLaMA via Ollama)
 
 ![Odoo Version](https://img.shields.io/badge/Odoo-17.0-purple)
 ![Python](https://img.shields.io/badge/Python-3.10+-green)
@@ -9,13 +9,13 @@
 
 ## 🎯 Description
 
-Ce module offre une solution complète de gestion des courriels dans Odoo 17, combinant une interface utilisateur moderne inspirée d'Outlook avec des fonctionnalités d'intelligence artificielle pour améliorer la productivité.
+Ce module offre une solution complète de gestion des courriels dans Odoo 17, combinant une interface utilisateur moderne avec des fonctionnalités d'intelligence artificielle pour améliorer la productivité.
 
 ### ✨ Fonctionnalités principales
 
 | Fonctionnalité | Description |
 |----------------|-------------|
-| 📬 **Interface Outlook** | Layout à 3 panneaux (dossiers, liste, lecture) |
+| 📬 **Interface 3 panneaux** | Layout à 3 panneaux (dossiers, liste, lecture) |
 | 🤖 **IA Intégrée** | Résumé automatique, suggestion de réponse, rédaction assistée |
 | 📁 **Gestion des dossiers** | Inbox, Envoyés, Brouillons, Archives, Spam |
 | 🏷️ **Étiquettes** | Organisation avec labels colorés (Urgent, RH, Client, etc.) |
