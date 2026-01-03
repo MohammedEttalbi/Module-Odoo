@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- VUE FORMULAIRE DOSSIER -->
+    <!-- ============================================================ -->
+    <record id="view_mail_dossier_form" model="ir.ui.view">
+        <field name="name">mail.dossier.form</field>
+        <field name="model">mail.dossier</field>
+        <field name="arch" type="xml">
+            <form string="Dossier">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_view_courriels"
+                                type="object"
+                                class="oe_stat_button"
+                                icon="fa-envelope">
+                            <field name="courriel_count" widget="statinfo" string="Courriels"/>
+                        </button>
+                    </div>
+                    <widget name="web_ribbon" title="Système" bg_color="bg-info" invisible="not is_system"/>
+                    <div class="oe_title">
+                        <label for="name"/>
+                        <h1>
+                            <field name="name" placeholder="Nom du dossier"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code"/>
+                            <field name="icon"/>
+                            <field name="sequence"/>
+                        </group>
+                        <group>
+                            <field name="color" widget="color_picker"/>
+                            <field name="is_system" readonly="1"/>
+                            <field name="courriel_non_lu_count"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- VUE LISTE DOSSIER -->
+    <!-- ============================================================ -->
+    <record id="view_mail_dossier_tree" model="ir.ui.view">
+        <field name="name">mail.dossier.tree</field>
+        <field name="model">mail.dossier</field>
+        <field name="arch" type="xml">
+            <tree string="Dossiers">
+                <field name="sequence" widget="handle"/>
+                <field name="icon"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="courriel_count"/>
+                <field name="courriel_non_lu_count" string="Non lus"/>
+                <field name="is_system" widget="boolean"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- VUE KANBAN DOSSIER -->
+    <!-- ============================================================ -->
+    <record id="view_mail_dossier_kanban" model="ir.ui.view">
+        <field name="name">mail.dossier.kanban</field>
+        <field name="model">mail.dossier</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard">
+                <field name="name"/>
+                <field name="icon"/>
+                <field name="color"/>
+                <field name="courriel_count"/>
+                <field name="courriel_non_lu_count"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_global_click">
+                            <div class="o_kanban_card_content">
+                                <div class="o_kanban_primary_left">
+                                    <div class="o_primary">
+                                        <span t-attf-class="fa #{record.icon.raw_value} fa-2x" style="margin-right: 10px;"/>
+                                        <span class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </span>
+                                    </div>
+                                    <div class="text-muted">
+                                        <span><field name="courriel_count"/> courriels</span>
+                                        <span t-if="record.courriel_non_lu_count.raw_value > 0" class="badge bg-primary ms-2">
+                                            <field name="courriel_non_lu_count"/> non lus
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- ============================================================ -->
+    <!-- ACTION DOSSIER -->
+    <!-- ============================================================ -->
+    <record id="action_mail_dossier" model="ir.actions.act_window">
+        <field name="name">Dossiers</field>
+        <field name="res_model">mail.dossier</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créez un nouveau dossier
+            </p>
+            <p>
+                Organisez vos courriels dans des dossiers personnalisés.
+            </p>
+        </field>
+    </record>
+
+</odoo>

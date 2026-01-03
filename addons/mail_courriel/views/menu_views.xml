@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- ============================================================ -->
+    <!-- MENU PRINCIPAL - Interface Outlook (sans sous-menus visibles) -->
+    <!-- ============================================================ -->
+    <menuitem 
+        id="menu_mail_courriel_root" 
+        name="📧 Courriels" 
+        sequence="10"
+        action="action_mail_client"
+        web_icon="mail_courriel,static/description/icon.png"/>
+
+    <!-- ============================================================ -->
+    <!-- CONFIGURATION (seul sous-menu visible si nécessaire) -->
+    <!-- ============================================================ -->
+    <menuitem 
+        id="menu_mail_courriel_config"
+        name="⚙️ Configuration"
+        parent="menu_mail_courriel_root"
+        sequence="100"/>
+
+    <menuitem 
+        id="menu_mail_dossier"
+        name="Dossiers"
+        parent="menu_mail_courriel_config"
+        action="action_mail_dossier"
+        sequence="10"/>
+
+    <menuitem 
+        id="menu_mail_etiquette_config"
+        name="Étiquettes"
+        parent="menu_mail_courriel_config"
+        action="action_mail_etiquette"
+        sequence="20"/>
+
+    <!-- Vue classique (menu caché, accessible via Configuration) -->
+    <menuitem 
+        id="menu_mail_courriel_classic"
+        name="📋 Vue classique"
+        parent="menu_mail_courriel_config"
+        sequence="30"/>
+
+    <menuitem 
+        id="menu_mail_courriel_inbox"
+        name="Boîte de réception"
+        parent="menu_mail_courriel_classic"
+        action="action_mail_courriel_inbox"
+        sequence="10"/>
+
+    <menuitem 
+        id="menu_mail_courriel_sent"
+        name="Envoyés"
+        parent="menu_mail_courriel_classic"
+        action="action_mail_courriel_sent"
+        sequence="20"/>
+
+    <menuitem 
+        id="menu_mail_courriel_draft"
+        name="Brouillons"
+        parent="menu_mail_courriel_classic"
+        action="action_mail_courriel_draft"
+        sequence="30"/>
+
+    <menuitem 
+        id="menu_mail_courriel_all"
+        name="Tous les courriels"
+        parent="menu_mail_courriel_classic"
+        action="action_mail_courriel"
+        sequence="40"/>
+
+</odoo>

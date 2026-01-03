@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mail_courriel,mail.courriel,model_mail_courriel,,1,1,1,1
+access_mail_dossier,mail.dossier,model_mail_dossier,,1,1,1,1
+access_mail_etiquette,mail.etiquette,model_mail_etiquette,,1,1,1,1
+access_mail_ai,mail.ai,model_mail_ai,,1,1,1,1

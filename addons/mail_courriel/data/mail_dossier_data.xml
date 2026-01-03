@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Boîte de réception -->
+        <record id="dossier_inbox" model="mail.dossier">
+            <field name="name">Boîte de réception</field>
+            <field name="code">inbox</field>
+            <field name="icon">fa-inbox</field>
+            <field name="sequence">1</field>
+            <field name="color">4</field>
+            <field name="is_system">True</field>
+            <field name="description">Courriels reçus</field>
+        </record>
+
+        <!-- Envoyés -->
+        <record id="dossier_sent" model="mail.dossier">
+            <field name="name">Envoyés</field>
+            <field name="code">sent</field>
+            <field name="icon">fa-paper-plane</field>
+            <field name="sequence">2</field>
+            <field name="color">10</field>
+            <field name="is_system">True</field>
+            <field name="description">Courriels envoyés</field>
+        </record>
+
+        <!-- Brouillons -->
+        <record id="dossier_draft" model="mail.dossier">
+            <field name="name">Brouillons</field>
+            <field name="code">draft</field>
+            <field name="icon">fa-edit</field>
+            <field name="sequence">3</field>
+            <field name="color">3</field>
+            <field name="is_system">True</field>
+            <field name="description">Courriels en cours de rédaction</field>
+        </record>
+
+        <!-- Archives -->
+        <record id="dossier_archive" model="mail.dossier">
+            <field name="name">Archives</field>
+            <field name="code">archive</field>
+            <field name="icon">fa-archive</field>
+            <field name="sequence">4</field>
+            <field name="color">7</field>
+            <field name="is_system">True</field>
+            <field name="description">Courriels archivés</field>
+        </record>
+
+        <!-- Spam -->
+        <record id="dossier_spam" model="mail.dossier">
+            <field name="name">Spam</field>
+            <field name="code">spam</field>
+            <field name="icon">fa-ban</field>
+            <field name="sequence">5</field>
+            <field name="color">1</field>
+            <field name="is_system">True</field>
+            <field name="description">Courriels indésirables</field>
+        </record>
+
+    </data>
+</odoo>

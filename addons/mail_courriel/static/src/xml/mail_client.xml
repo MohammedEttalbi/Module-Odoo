@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="mail_courriel.MailCourrielClient" owl="1">
+        <div class="mail-outlook-container d-flex h-100">
+            
+            <!-- PANNEAU GAUCHE: Dossiers + Navigation (Style Outlook) -->
+            <div class="mail-folders-sidebar">
+                <div class="folders-header">
+                    <button class="btn-compose" t-on-click="nouveauCourriel">
+                        <i class="fa fa-plus me-2"></i>Nouveau message
+                    </button>
+                    <button class="btn-compose-ai mt-2" t-on-click="openAiDraftModal">
+                        <i class="fa fa-magic me-2"></i>Rédiger avec IA
+                    </button>
+                </div>
+                
+                <!-- DOSSIERS -->
+                <div class="folders-list">
+                    <div class="folder-section-title">Dossiers</div>
+                    <t t-foreach="state.dossiers" t-as="dossier" t-key="dossier.id">
+                        <div class="folder-item"
+                             t-att-class="{ 'active': state.selectedDossier and state.selectedDossier.id === dossier.id }"
+                             t-on-click="() => this.selectDossier(dossier)">
+                            <i t-att-class="'fa ' + getIconClass(dossier.code)"></i>
+                            <span class="folder-name" t-esc="dossier.name"/>
+                            <span t-if="dossier.courriel_non_lu_count > 0" class="folder-badge">
+                                <t t-esc="dossier.courriel_non_lu_count"/>
+                            </span>
+                        </div>
+                    </t>
+                </div>
+
+                <!-- SÉPARATEUR -->
+                <div class="sidebar-divider"></div>
+
+                <!-- NAVIGATION ADDITIONNELLE -->
+                <div class="folders-list sidebar-nav">
+                    <div class="folder-section-title">Navigation</div>
+                    
+                    <div class="folder-item" t-on-click="openEtiquettes">
+                        <i class="fa fa-tags"></i>
+                        <span class="folder-name">Étiquettes</span>
+                    </div>
+                    
+                    <div class="folder-item" t-on-click="openVueClassique">
+                        <i class="fa fa-list"></i>
+                        <span class="folder-name">Vue classique</span>
+                    </div>
+                </div>
+
+                <!-- SÉPARATEUR -->
+                <div class="sidebar-divider"></div>
+
+                <!-- CONFIGURATION -->
+                <div class="folders-list sidebar-nav">
+                    <div class="folder-section-title">Paramètres</div>
+                    
+                    <div class="folder-item" t-on-click="openDossierConfig">
+                        <i class="fa fa-folder-open"></i>
+                        <span class="folder-name">Gérer les dossiers</span>
+                    </div>
+                    
+                    <div class="folder-item" t-on-click="openEtiquetteConfig">
+                        <i class="fa fa-tag"></i>
+                        <span class="folder-name">Gérer les étiquettes</span>
+                    </div>
+                    
+                    <div class="folder-item" t-on-click="openSettings">
+                        <i class="fa fa-cog"></i>
+                        <span class="folder-name">Configuration</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANNEAU CENTRAL: Liste des emails -->
+            <div class="mail-list-panel">
+                <div class="list-header">
+                    <div class="list-title">
+                        <t t-if="state.selectedDossier">
+                            <i t-att-class="'fa ' + getIconClass(state.selectedDossier.code) + ' me-2'"></i>
+                            <span t-esc="state.selectedDossier.name"/>
+                            <span class="email-count">(<t t-esc="state.courriels.length"/>)</span>
+                        </t>
+                    </div>
+                    <div class="list-actions">
+                        <button class="btn-icon" t-on-click="refreshEmails" title="Actualiser">
+                            <i class="fa fa-refresh"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="search-box">
+                    <i class="fa fa-search"></i>
+                    <input type="text" placeholder="Rechercher dans les messages..." 
+                           t-model="state.searchQuery"/>
+                </div>
+                
+                <div class="email-list">
+                    <t t-if="state.loading">
+                        <div class="loading-state">
+                            <i class="fa fa-spinner fa-spin fa-2x"></i>
+                            <p>Chargement...</p>
+                        </div>
+                    </t>
+                    
+                    <t t-elif="state.courriels.length === 0">
+                        <div class="empty-state">
+                            <i class="fa fa-inbox fa-3x"></i>
+                            <p>Aucun message</p>
+                        </div>
+                    </t>
+                    
+                    <t t-else="">
+                        <t t-foreach="state.courriels" t-as="courriel" t-key="courriel.id">
+                            <div class="email-item"
+                                 t-att-class="{ 
+                                     'active': state.selectedCourriel and state.selectedCourriel.id === courriel.id,
+                                     'unread': courriel.statut === 'envoye' or courriel.statut === 'brouillon'
+                                 }"
+                                 t-on-click="() => this.selectCourriel(courriel)">
+                                <div class="email-avatar">
+                                    <t t-esc="getSenderInitial(courriel)"/>
+                                </div>
+                                <div class="email-content">
+                                    <div class="email-header">
+                                        <span class="email-sender" t-esc="getSenderName(courriel)"/>
+                                        <span class="email-date" t-esc="formatDate(courriel.date_envoi)"/>
+                                    </div>
+                                    <div class="email-subject">
+                                        <span class="priority-icon" t-esc="getPrioriteIcon(courriel.priorite)"/>
+                                        <t t-esc="courriel.name || '(Sans objet)'"/>
+                                        <i t-if="courriel.attachment_count > 0" class="fa fa-paperclip ms-1"></i>
+                                    </div>
+                                    <div class="email-preview" t-esc="getPreviewText(courriel.contenu, 80)"/>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                </div>
+            </div>
+
+            <!-- PANNEAU DROIT: Aperçu du message -->
+            <div class="mail-preview-panel">
+                <t t-if="state.selectedCourriel">
+                    <div class="preview-header">
+                        <div class="preview-actions">
+                            <button class="btn-action" title="Répondre">
+                                <i class="fa fa-reply"></i> Répondre
+                            </button>
+                            <button class="btn-action" title="Transférer">
+                                <i class="fa fa-share"></i> Transférer
+                            </button>
+                            <button class="btn-action btn-danger-light" title="Supprimer">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                        
+                        <!-- BOUTONS IA -->
+                        <div class="ai-actions mt-2">
+                            <button class="btn-ai" t-on-click="aiSummarize" 
+                                    t-att-disabled="state.aiLoading"
+                                    title="Résumer avec l'IA">
+                                <i t-att-class="state.aiLoading ? 'fa fa-spinner fa-spin' : 'fa fa-compress'"></i>
+                                Résumer
+                            </button>
+                            <button class="btn-ai" t-on-click="aiSuggestReply"
+                                    t-att-disabled="state.aiLoading"
+                                    title="Suggérer une réponse avec l'IA">
+                                <i t-att-class="state.aiLoading ? 'fa fa-spinner fa-spin' : 'fa fa-magic'"></i>
+                                Suggérer réponse
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- RÉSULTAT IA -->
+                    <t t-if="state.aiResult">
+                        <div class="ai-result-box">
+                            <div class="ai-result-header">
+                                <i class="fa fa-robot"></i>
+                                <span t-esc="state.aiResultType === 'summary' ? 'Résumé IA' : 'Réponse suggérée'"/>
+                                <button class="btn-close-ai" t-on-click="closeAiResult">×</button>
+                            </div>
+                            <div class="ai-result-content" t-esc="state.aiResult"/>
+                            <t t-if="state.aiResultType === 'reply'">
+                                <button class="btn btn-sm btn-primary mt-2" t-on-click="useAiReply">
+                                    <i class="fa fa-check me-1"></i>Utiliser cette réponse
+                                </button>
+                            </t>
+                        </div>
+                    </t>
+                    
+                    <div class="preview-content">
+                        <div class="preview-subject">
+                            <h2 t-esc="state.selectedCourriel.name || '(Sans objet)'"/>
+                        </div>
+                        
+                        <div class="preview-meta">
+                            <div class="sender-info">
+                                <div class="sender-avatar">
+                                    <t t-esc="getSenderInitial(state.selectedCourriel)"/>
+                                </div>
+                                <div class="sender-details">
+                                    <div class="sender-name" t-esc="getSenderName(state.selectedCourriel)"/>
+                                    <div class="sender-email" t-esc="state.selectedCourriel.expediteur_email || ''"/>
+                                </div>
+                            </div>
+                            <div class="email-datetime" t-esc="formatFullDate(state.selectedCourriel.date_envoi)"/>
+                        </div>
+                        
+                        <div class="preview-body" t-raw="state.selectedCourriel.contenu || 'Aucun contenu'"/>
+                        
+                        <div class="preview-footer">
+                            <button class="btn btn-primary" t-on-click="() => this.openCourriel(state.selectedCourriel)">
+                                <i class="fa fa-expand me-2"></i>Ouvrir en détail
+                            </button>
+                        </div>
+                    </div>
+                </t>
+                
+                <t t-else="">
+                    <div class="empty-preview">
+                        <i class="fa fa-envelope-open-o fa-4x"></i>
+                        <h3>Sélectionnez un message</h3>
+                        <p>Choisissez un message dans la liste pour le lire ici</p>
+                    </div>
+                </t>
+            </div>
+
+            <!-- MODAL RÉDACTION IA -->
+            <t t-if="state.showAiDraftModal">
+                <div class="ai-modal-overlay" t-on-click="closeAiDraftModal">
+                    <div class="ai-modal" t-on-click.stop="">
+                        <div class="ai-modal-header">
+                            <h3><i class="fa fa-magic me-2"></i>Rédiger avec l'IA</h3>
+                            <button class="btn-close-modal" t-on-click="closeAiDraftModal">×</button>
+                        </div>
+                        <div class="ai-modal-body">
+                            <label>Décrivez l'email que vous souhaitez rédiger :</label>
+                            <textarea 
+                                class="ai-prompt-input"
+                                t-model="state.aiDraftPrompt"
+                                placeholder="Ex: Rédige un email pour demander un rendez-vous avec le directeur commercial la semaine prochaine..."
+                                rows="4"></textarea>
+                            
+                            <t t-if="state.aiDraftResult">
+                                <div class="ai-draft-result">
+                                    <label>Email généré :</label>
+                                    <div class="ai-draft-content" t-esc="state.aiDraftResult"/>
+                                </div>
+                            </t>
+                        </div>
+                        <div class="ai-modal-footer">
+                            <button class="btn btn-secondary" t-on-click="closeAiDraftModal">Annuler</button>
+                            <button class="btn btn-ai-primary" t-on-click="generateAiDraft"
+                                    t-att-disabled="state.aiLoading || !state.aiDraftPrompt">
+                                <i t-att-class="state.aiLoading ? 'fa fa-spinner fa-spin' : 'fa fa-magic'"></i>
+                                Générer
+                            </button>
+                            <t t-if="state.aiDraftResult">
+                                <button class="btn btn-primary" t-on-click="useAiDraft">
+                                    <i class="fa fa-check me-1"></i>Utiliser
+                                </button>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </div>
+    </t>
+
+</templates>
