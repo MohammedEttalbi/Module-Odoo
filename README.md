@@ -3,7 +3,6 @@
 > Module Odoo 17 de gestion des emails avec interface style Outlook et assistance IA (LLaMA via Ollama)
 
 ![Odoo Version](https://img.shields.io/badge/Odoo-17.0-purple)
-![License](https://img.shields.io/badge/License-LGPL--3-blue)
 ![Python](https://img.shields.io/badge/Python-3.10+-green)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue)
 ![AI](https://img.shields.io/badge/AI-LLaMA%203.2-orange)
@@ -151,13 +150,6 @@ Crée un email complet à partir d'une simple instruction.
 ### 4. Génération d'objet
 Suggère un objet pertinent basé sur le contenu.
 
-## 📸 Captures d'écran
-
-### Interface principale (3 panneaux)
-L'interface s'inspire du design Outlook avec :
-- **Panneau gauche** : Navigation des dossiers
-- **Panneau central** : Liste des emails
-- **Panneau droit** : Aperçu du contenu
 
 ## 🛠️ Développement
 
@@ -189,12 +181,9 @@ docker-compose exec odoo17 odoo -u mail_courriel -d odoo_db --stop-after-init
 
 ## 📚 Documentation
 
-- [Rapport technique complet](rapport/Rapport.docx)
+- [Rapport technique complet](rapport/Rapport.pdf)
 
 ## 👥 Auteurs
 
 **EMSI - Projet de fin d'études 5IIR**
 
-## 📄 Licence
-
-Ce projet est sous licence **LGPL-3.0** - voir le fichier [LICENSE](LICENSE) pour plus de détails.
